@@ -1,63 +1,70 @@
 <?php
+
 namespace NotificationChannels\TurboSms;
+
+use SoapClient;
 use NotificationChannels\TurboSms\Exceptions\CouldNotSendNotification;
-use \SoapClient;
 
-class TurboSmsApi {
-	/** @var HttpClient */
-	protected $httpClient;
-	/** @var string */
-	protected $login;
-	/** @var string */
-	protected $secret;
-	/** @var string */
-	protected $sender;
-	public function __construct($login, $secret, $sender, $url) {
-		$this->login = $login;
-		$this->secret = $secret;
-		$this->sender = $sender;
-		$this->httpClient = new SoapClient($url);
-	}
-	/**
-	 * @param  array  $params
-	 *
-	 * @return array
-	 *
-	 * @throws CouldNotSendNotification
-	 */
-	public function send($params) {
-		try {
-			$auth = [
-				'login' => $this->login,
-				'password' => $this->secret,
-			];
-			$result = $this->httpClient->Auth($auth);
-			if ($result->AuthResult == 'Неверный логин или пароль') {
-				throw CouldNotSendNotification::incorrectCredentialsTurboSms();
-			}
-			$result = $this->httpClient->GetCreditBalance();
-			$balance = (int) $result->GetCreditBalanceResult;
-			echo $balance;
-			if ($balance < 1) {
-				throw CouldNotSendNotification::lowBalanceTurboSms();
-			}
+class TurboSmsApi
+{
+    /** @var HttpClient */
+    protected $httpClient;
+    /** @var string */
+    protected $login;
+    /** @var string */
+    protected $secret;
+    /** @var string */
+    protected $sender;
 
-			$sms = [
-				'sender' => $this->sender,
-				'destination' => $params['phone'],
-				'text' => $params['text'],
-			];
-			$result = $this->httpClient->SendSMS($sms);
+    public function __construct($login, $secret, $sender, $url)
+    {
+        $this->login = $login;
+        $this->secret = $secret;
+        $this->sender = $sender;
+        $this->httpClient = new SoapClient($url);
+    }
 
-			if ($result->SendSMSResult->ResultArray[0] != 'Сообщения успешно отправлены') {
-				throw new DomainException($result->SendSMSResult->ResultArray[0]);
-			}
+    /**
+     * @param  array  $params
+     *
+     * @return array
+     *
+     * @throws CouldNotSendNotification
+     */
+    public function send($params)
+    {
+        try {
+            $auth = [
+                'login' => $this->login,
+                'password' => $this->secret,
+            ];
+            $result = $this->httpClient->Auth($auth);
+            if ($result->AuthResult == 'Неверный логин или пароль') {
+                throw CouldNotSendNotification::incorrectCredentialsTurboSms();
+            }
+            $result = $this->httpClient->GetCreditBalance();
+            $balance = (int) $result->GetCreditBalanceResult;
+            echo $balance;
+            if ($balance < 1) {
+                throw CouldNotSendNotification::lowBalanceTurboSms();
+            }
 
-			return $result;
-		} catch (DomainException $exception) {
-			throw CouldNotSendNotification::turbosmsRespondedWithAnError($exception);
-		} catch (\Exception $exception) {
-			throw CouldNotSendNotification::couldNotCommunicateWithTurboSms($exception);
-		}
-	}
+            $sms = [
+                'sender' => $this->sender,
+                'destination' => $params['phone'],
+                'text' => $params['text'],
+            ];
+            $result = $this->httpClient->SendSMS($sms);
+
+            if ($result->SendSMSResult->ResultArray[0] != 'Сообщения успешно отправлены') {
+                throw new DomainException($result->SendSMSResult->ResultArray[0]);
+            }
+
+            return $result;
+        } catch (DomainException $exception) {
+            throw CouldNotSendNotification::turbosmsRespondedWithAnError($exception);
+        } catch (\Exception $exception) {
+            throw CouldNotSendNotification::couldNotCommunicateWithTurboSms($exception);
+        }
+    }
 }

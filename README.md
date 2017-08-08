@@ -19,6 +19,7 @@ This package made for send notifications using [turbosms.ua](https://turbosms.ua
 ## Installation
 
 You can install the package via composer:
+```composer require yakimka/laravel-notification-channel-turbosms```
 
 Then you must install the service provider:
 ```php

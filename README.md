@@ -21,7 +21,7 @@ This package made for send notifications using [turbosms.ua](https://turbosms.ua
 You can install the package via composer:
 ```composer require yakimka/laravel-notification-channel-turbosms```
 
-Then you must install the service provider:
+For Laravel < 5.5 you must install the service provider:
 ```php
 // config/app.php
 'providers' => [
@@ -83,10 +83,6 @@ public function routeNotificationForTurboSms()
 `from()`: Sets the sender's name or phone number.
 
 `content()`: Sets a content of the notification message.
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
 
 ## Security
 

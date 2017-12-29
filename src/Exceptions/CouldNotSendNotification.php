@@ -2,11 +2,12 @@
 
 namespace NotificationChannels\TurboSms\Exceptions;
 
-use Exception;
 use DomainException;
+use Exception;
 
 class CouldNotSendNotification extends Exception
 {
+
     /**
      * Thrown when recipient's phone number is missing.
      *
@@ -25,28 +26,29 @@ class CouldNotSendNotification extends Exception
     public static function contentLengthLimitExceeded()
     {
         return new static(
-            'Notification was not sent. Content length may not be greater than 800 characters.'
+          'Notification was not sent. Content length may not be greater than 800 characters.'
         );
     }
 
     /**
      * Thrown when we're unable to communicate with TurboSms.
      *
-     * @param  DomainException  $exception
+     * @param  DomainException $exception
      *
      * @return static
      */
-    public static function turbosmsRespondedWithAnError(DomainException $exception)
-    {
+    public static function turbosmsRespondedWithAnError(
+      DomainException $exception
+    ) {
         return new static(
-            "TurboSms responded with an error '{$exception}'"
+          "TurboSms responded with an error '{$exception}'"
         );
     }
 
     /**
      * Thrown when we're unable to communicate with TurboSms.
      *
-     * @param  Exception  $exception
+     * @param  Exception $exception
      *
      * @return static
      */
@@ -63,7 +65,7 @@ class CouldNotSendNotification extends Exception
     public static function incorrectCredentialsTurboSms()
     {
         return new static(
-            'Notification was not sent. Failed login to TurboSms.'
+          'Notification was not sent. Failed login to TurboSms.'
         );
     }
 
@@ -75,7 +77,19 @@ class CouldNotSendNotification extends Exception
     public static function lowBalanceTurboSms()
     {
         return new static(
-            'Notification was not sent. Low balance.'
+          'Notification was not sent. Low balance.'
         );
+    }
+
+    /**
+     * @param $request
+     *
+     * @return mixed
+     */
+    public function render($request)
+    {
+        return response()->json($this->getMessage(), 500,
+          ['Content-type' => 'application/json; charset=utf-8'],
+          JSON_UNESCAPED_UNICODE);
     }
 }

@@ -2,17 +2,22 @@
 
 namespace NotificationChannels\TurboSms;
 
-use SoapClient;
+use DomainException;
 use NotificationChannels\TurboSms\Exceptions\CouldNotSendNotification;
+use SoapClient;
 
 class TurboSmsApi
 {
+
     /** @var HttpClient */
     protected $httpClient;
+
     /** @var string */
     protected $login;
+
     /** @var string */
     protected $secret;
+
     /** @var string */
     protected $sender;
 
@@ -25,7 +30,7 @@ class TurboSmsApi
     }
 
     /**
-     * @param  array  $params
+     * @param  array $params
      *
      * @return array
      *
@@ -35,28 +40,30 @@ class TurboSmsApi
     {
         try {
             $auth = [
-                'login' => $this->login,
-                'password' => $this->secret,
+              'login' => $this->login,
+              'password' => $this->secret,
             ];
             $result = $this->httpClient->Auth($auth);
             if ($result->AuthResult == 'Неверный логин или пароль') {
                 throw CouldNotSendNotification::incorrectCredentialsTurboSms();
             }
             $result = $this->httpClient->GetCreditBalance();
-            $balance = (int) $result->GetCreditBalanceResult;
+            $balance = (int)$result->GetCreditBalanceResult;
             echo $balance;
             if ($balance < 1) {
                 throw CouldNotSendNotification::lowBalanceTurboSms();
             }
 
             $sms = [
-                'sender' => $this->sender,
-                'destination' => $params['phone'],
-                'text' => $params['text'],
+              'sender' => $this->sender,
+              'destination' => $params['phone'],
+              'text' => $params['text'],
             ];
             $result = $this->httpClient->SendSMS($sms);
 
-            if ($result->SendSMSResult->ResultArray[0] != 'Сообщения успешно отправлены') {
+            if ($result->SendSMSResult->ResultArray[0]
+              != 'Сообщения успешно отправлены'
+            ) {
                 throw new DomainException($result->SendSMSResult->ResultArray[0]);
             }
 

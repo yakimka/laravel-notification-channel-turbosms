@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class TurboSmsServiceProvider extends ServiceProvider
 {
+
     /**
      * Bootstrap the application services.
      */
@@ -22,7 +23,8 @@ class TurboSmsServiceProvider extends ServiceProvider
         $this->app->singleton(TurboSmsApi::class, function () {
             $config = config('services.turbosms');
 
-            return new TurboSmsApi($config['login'], $config['secret'], $config['sender'], $config['url']);
+            return new TurboSmsApi($config['login'], $config['secret'],
+              $config['sender'], $config['url']);
         });
     }
 }

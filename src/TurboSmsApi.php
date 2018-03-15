@@ -49,7 +49,6 @@ class TurboSmsApi
             }
             $result = $this->httpClient->GetCreditBalance();
             $balance = (int)$result->GetCreditBalanceResult;
-            echo $balance;
             if ($balance < 1) {
                 throw CouldNotSendNotification::lowBalanceTurboSms();
             }

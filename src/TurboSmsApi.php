@@ -63,7 +63,7 @@ class TurboSmsApi
             if ($result->SendSMSResult->ResultArray[0]
               != 'Сообщения успешно отправлены'
             ) {
-                throw new DomainException($result->SendSMSResult->ResultArray);
+                throw new DomainException($result->SendSMSResult->ResultArray[0]);
             }
 
             return $result;

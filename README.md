@@ -1,7 +1,7 @@
-# Turbo SMS notifications channel for Laravel 5.3+
+# Turbo SMS notifications channel for Laravel 5, 6, 7
 Based on [github.com/laravel-notification-channels/smsc-ru](https://github.com/laravel-notification-channels/smsc-ru)
 
-This package made for send notifications using [turbosms.ua](https://turbosms.ua/) with Laravel 5.3+.
+This package made for send notifications using [turbosms.ua](https://turbosms.ua/) with Laravel 5, 6, 7.
 
 ## Contents
 

@@ -44,6 +44,7 @@ class TurboSmsChannelTest extends TestCase
 
     public function test_it_can_send_a_notification(): void
     {
+        $this->expectNotToPerformAssertions();
         $this->turbosms->shouldReceive('send')
             ->once()
             ->with([

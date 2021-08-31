@@ -13,6 +13,11 @@ class TurboSmsApiTest extends TestCase
     /** @var SoapClient|M\MockInterface */
     private $soapClient;
 
+    /**
+     * @var string[]
+     */
+    private $params;
+
     public function setUp(): void
     {
         $this->soapClient = M::mock(SoapClient::class);
@@ -20,26 +25,25 @@ class TurboSmsApiTest extends TestCase
             'phone' => '+1234567890',
             'text'  => 'hello',
         ];
+        $this->turbosms = $this->getExtendedTurboSmsApi(
+            'login',
+            'secret',
+            'sender',
+            $this->soapClient
+        );
     }
 
     public function tearDown(): void
     {
         M::close();
     }
-    
+
     public function test_construct_params(): void
     {
-        $turbosms = $this->getExtendedTurboSmsApi([
-            'login'  => $login = 'login',
-            'secret' => $secret = 'secret',
-            'sender' => $sender = 'sender',
-            'client' => $client = $this->soapClient,
-        ]);
-
-        $this->assertEquals($login, $turbosms->getLogin());
-        $this->assertEquals($secret, $turbosms->getSecret());
-        $this->assertEquals($sender, $turbosms->getSender());
-        $this->assertEquals($client, $turbosms->getClient());
+        $this->assertEquals('login', $this->turbosms->getLogin());
+        $this->assertEquals('secret', $this->turbosms->getSecret());
+        $this->assertEquals('sender', $this->turbosms->getSender());
+        $this->assertEquals($this->soapClient, $this->turbosms->getClient());
     }
 
     public function test_error_when_trying_to_auth(): void
@@ -55,14 +59,7 @@ class TurboSmsApiTest extends TestCase
         $this->expectException(CouldNotSendNotification::class);
         $this->expectExceptionMessage('The communication with TurboSms failed. Reason: Notification was not sent. Failed login to TurboSms.');
 
-        $turbosms = $this->getExtendedTurboSmsApi([
-            'login'  => $login = 'login',
-            'secret' => $secret = 'secret',
-            'sender' => $sender = 'sender',
-            'client' => $client = $this->soapClient,
-        ]);
-
-        $turbosms->send($this->params);
+        $this->turbosms->send($this->params);
     }
 
     public function test_send_sms(): void
@@ -82,14 +79,7 @@ class TurboSmsApiTest extends TestCase
             'text'        => 'hello',
         ]);
 
-        $turbosms = $this->getExtendedTurboSmsApi([
-            'login'  => $login = 'login',
-            'secret' => $secret = 'secret',
-            'sender' => $sender = 'sender',
-            'client' => $client = $this->soapClient,
-        ]);
-
-        $result = $turbosms->send($this->params);
+        $result = $this->turbosms->send($this->params);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -113,19 +103,12 @@ class TurboSmsApiTest extends TestCase
         $this->expectException(CouldNotSendNotification::class);
         $this->expectExceptionMessage('Ошибка');
 
-        $turbosms = $this->getExtendedTurboSmsApi([
-            'login'  => $login = 'login',
-            'secret' => $secret = 'secret',
-            'sender' => $sender = 'sender',
-            'client' => $client = $this->soapClient,
-        ]);
-
-        $turbosms->send($this->params);
+        $this->turbosms->send($this->params);
     }
 
-    private function getExtendedTurboSmsApi(array $config)
+    private function getExtendedTurboSmsApi($login, $secret, $sender, $client)
     {
-        return new class(...$config) extends TurboSmsApi {
+        return new class($login, $secret, $sender, $client) extends TurboSmsApi {
             public function getClient(): string
             {
                 return $this->soapClient;

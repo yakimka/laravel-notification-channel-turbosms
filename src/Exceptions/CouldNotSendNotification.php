@@ -38,7 +38,7 @@ class CouldNotSendNotification extends Exception
      * @return static
      */
     public static function turbosmsRespondedWithAnError(
-      DomainException $exception
+        DomainException $exception
     ) {
         return new static(
           "TurboSms responded with an error '{$exception}'"
@@ -76,8 +76,11 @@ class CouldNotSendNotification extends Exception
      */
     public function render($request)
     {
-        return response()->json($this->getMessage(), 500,
-          ['Content-type' => 'application/json; charset=utf-8'],
-          JSON_UNESCAPED_UNICODE);
+        return response()->json(
+            $this->getMessage(),
+            500,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 }

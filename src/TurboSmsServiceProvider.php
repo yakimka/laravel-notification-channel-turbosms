@@ -25,8 +25,12 @@ class TurboSmsServiceProvider extends ServiceProvider
             $config = config('services.turbosms');
             
             $client = new SoapClient($config['url']);
-            return new TurboSmsApi($config['login'], $config['secret'],
-              $config['sender'], $client);
+            return new TurboSmsApi(
+                $config['login'],
+                $config['secret'],
+                $config['sender'],
+                $client
+            );
         });
     }
 }

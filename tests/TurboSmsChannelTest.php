@@ -5,10 +5,10 @@ namespace NotificationChannels\TurboSms\Test;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
 use Mockery as M;
+use NotificationChannels\TurboSms\Exceptions\CouldNotSendNotification;
 use NotificationChannels\TurboSms\TurboSmsApi;
 use NotificationChannels\TurboSms\TurboSmsChannel;
 use NotificationChannels\TurboSms\TurboSmsMessage;
-use NotificationChannels\TurboSms\Exceptions\CouldNotSendNotification;
 use PHPUnit\Framework\TestCase;
 
 class TurboSmsChannelTest extends TestCase
@@ -60,7 +60,8 @@ class TurboSmsChannelTest extends TestCase
         $this->expectExceptionMessage('Notification was not sent. Phone number is missing.');
 
         $this->channel->send(
-            new TestNotifiableWithoutRouteNotificationForTurboSms(), new TestNotification()
+            new TestNotifiableWithoutRouteNotificationForTurboSms(),
+            new TestNotification()
         );
     }
 }

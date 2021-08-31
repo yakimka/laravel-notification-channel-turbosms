@@ -2,11 +2,11 @@
 
 namespace NotificationChannels\TurboSms\Test;
 
-use NotificationChannels\TurboSms\TurboSmsApi;
-use NotificationChannels\TurboSms\Exceptions\CouldNotSendNotification;
-use SoapClient;
 use Mockery as M;
+use NotificationChannels\TurboSms\Exceptions\CouldNotSendNotification;
+use NotificationChannels\TurboSms\TurboSmsApi;
 use PHPUnit\Framework\TestCase;
+use SoapClient;
 
 class TurboSmsApiTest extends TestCase
 {
@@ -28,7 +28,7 @@ class TurboSmsApiTest extends TestCase
     }
     
     public function test_construct_params(): void
-    {   
+    {
         $turbosms = $this->getExtendedTurboSmsApi([
             'login'  => $login = 'login',
             'secret' => $secret = 'secret',
@@ -125,8 +125,7 @@ class TurboSmsApiTest extends TestCase
 
     private function getExtendedTurboSmsApi(array $config)
     {
-        return new class(...$config) extends TurboSmsApi
-        {
+        return new class(...$config) extends TurboSmsApi {
             public function getClient(): string
             {
                 return $this->soapClient;
@@ -153,7 +152,6 @@ class TurboSmsApiTest extends TestCase
 
 class TestAuthResult
 {
-
     public function __construct($resultMsg)
     {
         $this->AuthResult = $resultMsg;
@@ -162,7 +160,6 @@ class TestAuthResult
 
 class TestSendSmsResult
 {
-
     public function __construct($result)
     {
         $this->SendSMSResult = $result;
@@ -172,7 +169,6 @@ class TestSendSmsResult
 
 class TestResultArray
 {
-
     public function __construct($resultArray)
     {
         $this->ResultArray = $resultArray;

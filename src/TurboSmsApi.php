@@ -9,8 +9,8 @@ use SoapClient;
 class TurboSmsApi
 {
 
-    /** @var HttpClient */
-    protected $httpClient;
+    /** @var SoapClient */
+    protected $soapClient;
 
     /** @var string */
     protected $login;
@@ -21,12 +21,12 @@ class TurboSmsApi
     /** @var string */
     protected $sender;
 
-    public function __construct($login, $secret, $sender, $url)
+    public function __construct($login, $secret, $sender, SoapClient $client)
     {
         $this->login = $login;
         $this->secret = $secret;
         $this->sender = $sender;
-        $this->httpClient = new SoapClient($url);
+        $this->soapClient = $client;
     }
 
     /**
@@ -43,14 +43,9 @@ class TurboSmsApi
               'login' => $this->login,
               'password' => $this->secret,
             ];
-            $result = $this->httpClient->Auth($auth);
+            $result = $this->soapClient->Auth($auth);
             if ($result->AuthResult == 'Неверный логин или пароль') {
                 throw CouldNotSendNotification::incorrectCredentialsTurboSms();
-            }
-            $result = $this->httpClient->GetCreditBalance();
-            $balance = (int)$result->GetCreditBalanceResult;
-            if ($balance < 1) {
-                throw CouldNotSendNotification::lowBalanceTurboSms();
             }
 
             $sms = [
@@ -58,12 +53,14 @@ class TurboSmsApi
               'destination' => $params['phone'],
               'text' => $params['text'],
             ];
-            $result = $this->httpClient->SendSMS($sms);
+            $result = $this->soapClient->SendSMS($sms);
 
             if ($result->SendSMSResult->ResultArray[0]
               != 'Сообщения успешно отправлены'
             ) {
-                throw new DomainException($result->SendSMSResult->ResultArray);
+                // ResultArray contains string if send was failed
+                $message = $result->SendSMSResult->ResultArray;
+                throw new DomainException($message);
             }
 
             return $result;

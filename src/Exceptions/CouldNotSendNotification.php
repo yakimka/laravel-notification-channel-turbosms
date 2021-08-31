@@ -38,7 +38,7 @@ class CouldNotSendNotification extends Exception
      * @return static
      */
     public static function turbosmsRespondedWithAnError(
-      DomainException $exception
+        DomainException $exception
     ) {
         return new static(
           "TurboSms responded with an error '{$exception}'"
@@ -70,26 +70,17 @@ class CouldNotSendNotification extends Exception
     }
 
     /**
-     * Thrown when ballance less than 1 credit.
-     *
-     * @return static
-     */
-    public static function lowBalanceTurboSms()
-    {
-        return new static(
-          'Notification was not sent. Low balance.'
-        );
-    }
-
-    /**
      * @param $request
      *
      * @return mixed
      */
     public function render($request)
     {
-        return response()->json($this->getMessage(), 500,
-          ['Content-type' => 'application/json; charset=utf-8'],
-          JSON_UNESCAPED_UNICODE);
+        return response()->json(
+            $this->getMessage(),
+            500,
+            ['Content-type' => 'application/json; charset=utf-8'],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 }

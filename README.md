@@ -1,7 +1,7 @@
-# Turbo SMS notifications channel for Laravel 5, 6, 7
+# Turbo SMS notifications channel for Laravel 5.3+
 Based on [github.com/laravel-notification-channels/smsc-ru](https://github.com/laravel-notification-channels/smsc-ru)
 
-This package made for send notifications using [turbosms.ua](https://turbosms.ua/) with Laravel 5, 6, 7.
+This package made for send notifications using [turbosms.ua](https://turbosms.ua/) (SOAP) with Laravel 5.3+
 
 ## Contents
 
@@ -18,6 +18,8 @@ This package made for send notifications using [turbosms.ua](https://turbosms.ua
 
 ## Installation
 
+Firstly you need working [soap extension](https://www.php.net/manual/en/soap.setup.php).
+
 You can install the package via composer:
 ```composer require yakimka/laravel-notification-channel-turbosms```
 
@@ -32,7 +34,7 @@ For Laravel < 5.5 you must install the service provider:
 
 ### Setting up the TurboSms service
 
-Add your TurboSms login, secret key (hashed password) and default sender name (or phone number) to your `config/services.php`:
+Add your TurboSms SOAP login, SOAP password and default sender name (or phone number) to your `config/services.php`:
 
 ```php
 // config/services.php
@@ -40,11 +42,13 @@ Add your TurboSms login, secret key (hashed password) and default sender name (o
 'turbosms' => [
     'login' => env('TURBOSMS_LOGIN'),
     'secret' => env('TURBOSMS_SECRET'),
-    'sender' => 'John Doe',
+    'sender' => 'BRAND',
     'url' => 'http://turbosms.in.ua/api/wsdl.html',
 ],
 ...
 ```
+
+You need to publish `Illuminate\Notifications\NotificationServiceProvider` files first.
 
 ## Usage
 
@@ -76,6 +80,18 @@ public function routeNotificationForTurboSms()
 {
     return $this->phone;
 }
+```
+
+or you can send notification in this way:
+
+```php
+Notification::route('turbosms', '+380501234567')->notify(new AccountApproved());
+```
+
+or with multiple receivers:
+
+```php
+Notification::route('turbosms', '+380501234567,+380631234567')->notify(new AccountApproved());
 ```
 
 ### Available methods

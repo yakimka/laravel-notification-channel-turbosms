@@ -4,6 +4,7 @@ namespace NotificationChannels\TurboSms;
 
 use DomainException;
 use NotificationChannels\TurboSms\Exceptions\CouldNotSendNotification;
+use SoapClient;
 
 class TurboSmsApi
 {
@@ -20,7 +21,7 @@ class TurboSmsApi
     /** @var string */
     protected $sender;
 
-    public function __construct($login, $secret, $sender, \SoapClient $client)
+    public function __construct($login, $secret, $sender, SoapClient $client)
     {
         $this->login = $login;
         $this->secret = $secret;

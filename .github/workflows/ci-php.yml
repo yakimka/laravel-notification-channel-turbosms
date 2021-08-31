@@ -1,0 +1,29 @@
+name: Github Actions for PHP with PHPUnit Tests
+
+on: [push]
+
+jobs:
+    run:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php-versions: ['7.2', '7.3', '7.4', '8.0']
+        name: PHP ${{ matrix.php-versions }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Install PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-versions }}
+#                  extensions: intl #optional
+#                  ini-values: "post_max_size=256M" #optional
+                  ini-values: "extension=soap"
+            - name: Check PHP Version
+              run: php -v
+            - name: Install dependencies
+              run: composer install --dev
+            - name: Check formatting
+              run: vendor/bin/php-cs-fixer fix --dry-run
+            - name: Run tests
+              run: composer test tests/

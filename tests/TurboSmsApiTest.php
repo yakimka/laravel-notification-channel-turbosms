@@ -84,7 +84,7 @@ class TurboSmsApiTest extends TestCase
         $this->assertEquals($expectedResult, $result);
     }
 
-    public function test_send_sms_and_receive_error(): void
+    public function test_send_sms_and_receive_string_error(): void
     {
         $this->soapClient->shouldReceive([
             'Auth' => new TestAuthResult('ОК'),
@@ -102,6 +102,28 @@ class TurboSmsApiTest extends TestCase
         ]);
         $this->expectException(CouldNotSendNotification::class);
         $this->expectExceptionMessage('Ошибка');
+
+        $this->turbosms->send($this->params);
+    }
+
+    public function test_send_sms_and_receive_array_error(): void
+    {
+        $this->soapClient->shouldReceive([
+            'Auth' => new TestAuthResult('ОК'),
+        ])->once();
+
+        $expectedResult = new TestSendSmsResult(new TestResultArray(['Ошибка1', 'Ошибка2']));
+        $this->soapClient->shouldReceive([
+            'SendSMS' => $expectedResult,
+        ])
+            ->once()
+            ->with([
+                'sender'      => 'sender',
+                'destination' => '+1234567890',
+                'text'        => 'hello',
+            ]);
+        $this->expectException(CouldNotSendNotification::class);
+        $this->expectExceptionMessage('Ошибка1. Ошибка2');
 
         $this->turbosms->send($this->params);
     }

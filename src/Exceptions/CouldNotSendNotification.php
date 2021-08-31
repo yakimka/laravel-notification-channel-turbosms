@@ -41,7 +41,9 @@ class CouldNotSendNotification extends Exception
         DomainException $exception
     ) {
         return new static(
-          "TurboSms responded with an error '{$exception}'"
+            "TurboSms responded with an error '{$exception->getMessage()}'",
+            $exception->getCode(),
+            $exception
         );
     }
 
@@ -54,7 +56,11 @@ class CouldNotSendNotification extends Exception
      */
     public static function couldNotCommunicateWithTurboSms(Exception $exception)
     {
-        return new static("The communication with TurboSms failed. Reason: {$exception->getMessage()}");
+        return new static(
+            "The communication with TurboSms failed. Reason: {$exception->getMessage()}",
+            $exception->getCode(),
+            $exception
+        );
     }
 
     /**

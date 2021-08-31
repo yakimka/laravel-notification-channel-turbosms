@@ -58,8 +58,10 @@ class TurboSmsApi
             if ($result->SendSMSResult->ResultArray[0]
               != 'Сообщения успешно отправлены'
             ) {
-                // ResultArray contains string if send was failed
                 $message = $result->SendSMSResult->ResultArray;
+                if (is_array($message)) {
+                    $message = implode('. ', $message);
+                }
                 throw new DomainException($message);
             }
 

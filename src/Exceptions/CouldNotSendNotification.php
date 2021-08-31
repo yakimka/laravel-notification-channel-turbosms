@@ -70,18 +70,6 @@ class CouldNotSendNotification extends Exception
     }
 
     /**
-     * Thrown when ballance less than 1 credit.
-     *
-     * @return static
-     */
-    public static function lowBalanceTurboSms()
-    {
-        return new static(
-          'Notification was not sent. Low balance.'
-        );
-    }
-
-    /**
      * @param $request
      *
      * @return mixed

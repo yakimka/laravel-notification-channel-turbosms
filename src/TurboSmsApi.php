@@ -47,11 +47,6 @@ class TurboSmsApi
             if ($result->AuthResult == 'Неверный логин или пароль') {
                 throw CouldNotSendNotification::incorrectCredentialsTurboSms();
             }
-            $result = $this->httpClient->GetCreditBalance();
-            $balance = (int)$result->GetCreditBalanceResult;
-            if ($balance < 1) {
-                throw CouldNotSendNotification::lowBalanceTurboSms();
-            }
 
             $sms = [
               'sender' => $this->sender,

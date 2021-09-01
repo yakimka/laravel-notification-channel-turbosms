@@ -1,3 +1,5 @@
+[![Latest Stable Version](http://poser.pugx.org/yakimka/laravel-notification-channel-turbosms/v)](https://packagist.org/packages/yakimka/laravel-notification-channel-turbosms) [![Total Downloads](http://poser.pugx.org/yakimka/laravel-notification-channel-turbosms/downloads)](https://packagist.org/packages/yakimka/laravel-notification-channel-turbosms) [![License](http://poser.pugx.org/yakimka/laravel-notification-channel-turbosms/license)](https://packagist.org/packages/yakimka/laravel-notification-channel-turbosms)
+
 # Turbo SMS notifications channel for Laravel 5.3+
 Based on [github.com/laravel-notification-channels/smsc-ru](https://github.com/laravel-notification-channels/smsc-ru)
 

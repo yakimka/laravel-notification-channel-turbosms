@@ -7,7 +7,6 @@ use SoapClient;
 
 class TurboSmsServiceProvider extends ServiceProvider
 {
-
     /**
      * Bootstrap the application services.
      */
@@ -23,8 +22,9 @@ class TurboSmsServiceProvider extends ServiceProvider
     {
         $this->app->singleton(TurboSmsApi::class, function () {
             $config = config('services.turbosms');
-            
+
             $client = new SoapClient($config['url']);
+
             return new TurboSmsApi(
                 $config['login'],
                 $config['secret'],

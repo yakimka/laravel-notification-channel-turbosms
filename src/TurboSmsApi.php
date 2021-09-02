@@ -8,7 +8,6 @@ use SoapClient;
 
 class TurboSmsApi
 {
-
     /** @var SoapClient */
     protected $soapClient;
 
@@ -30,18 +29,18 @@ class TurboSmsApi
     }
 
     /**
-     * @param  array $params
-     *
-     * @return array
+     * @param array $params
      *
      * @throws CouldNotSendNotification
+     *
+     * @return array
      */
     public function send($params)
     {
         try {
             $auth = [
-              'login' => $this->login,
-              'password' => $this->secret,
+                'login'    => $this->login,
+                'password' => $this->secret,
             ];
             $result = $this->soapClient->Auth($auth);
             if ($result->AuthResult == 'Неверный логин или пароль') {
@@ -49,9 +48,9 @@ class TurboSmsApi
             }
 
             $sms = [
-              'sender' => $this->sender,
-              'destination' => $params['phone'],
-              'text' => $params['text'],
+                'sender'      => $this->sender,
+                'destination' => $params['phone'],
+                'text'        => $params['text'],
             ];
             $result = $this->soapClient->SendSMS($sms);
 
@@ -62,6 +61,7 @@ class TurboSmsApi
                 if (is_array($message)) {
                     $message = implode('. ', $message);
                 }
+
                 throw new DomainException($message);
             }
 

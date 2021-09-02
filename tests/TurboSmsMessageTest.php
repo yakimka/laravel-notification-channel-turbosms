@@ -31,7 +31,7 @@ class TurboSmsMessageTest extends TestCase
     public function test_it_can_set_the_from(): void
     {
         $message = (new TurboSmsMessage())->from('John_Doe');
-        
+
         $this->assertEquals('John_Doe', $message->from);
     }
 }

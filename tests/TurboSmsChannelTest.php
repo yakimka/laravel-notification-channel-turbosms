@@ -28,10 +28,10 @@ class TurboSmsChannelTest extends TestCase
     public function setUp(): void
     {
         $this->turbosms = M::mock(TurboSmsApi::class, [
-            'login' => 'test',
+            'login'  => 'test',
             'secret' => 'test',
             'sender' => 'John_Doe',
-            'url' => 'http://example.com/wsdl.html',
+            'url'    => 'http://example.com/wsdl.html',
         ]);
         $this->channel = new TurboSmsChannel($this->turbosms);
         $this->message = M::mock(TurboSmsMessage::class);

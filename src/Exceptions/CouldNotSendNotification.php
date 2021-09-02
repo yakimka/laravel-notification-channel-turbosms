@@ -7,7 +7,6 @@ use Exception;
 
 class CouldNotSendNotification extends Exception
 {
-
     /**
      * Thrown when recipient's phone number is missing.
      *
@@ -33,7 +32,7 @@ class CouldNotSendNotification extends Exception
     /**
      * Thrown when we're unable to communicate with TurboSms.
      *
-     * @param  DomainException $exception
+     * @param DomainException $exception
      *
      * @return static
      */
@@ -50,7 +49,7 @@ class CouldNotSendNotification extends Exception
     /**
      * Thrown when we're unable to communicate with TurboSms.
      *
-     * @param  Exception $exception
+     * @param Exception $exception
      *
      * @return static
      */

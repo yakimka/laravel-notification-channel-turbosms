@@ -7,7 +7,6 @@ use NotificationChannels\TurboSms\Exceptions\CouldNotSendNotification;
 
 class TurboSmsChannel
 {
-
     /** @var \NotificationChannels\TurboSms\TurboSmsApi */
     protected $turbosms;
 
@@ -43,8 +42,8 @@ class TurboSmsChannel
             throw CouldNotSendNotification::contentLengthLimitExceeded();
         }
         $params = [
-          'phone' => $recipient,
-          'text' => $message->content,
+            'phone' => $recipient,
+            'text'  => $message->content,
         ];
         $this->turbosms->send($params);
     }

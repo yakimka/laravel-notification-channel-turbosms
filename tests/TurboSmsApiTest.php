@@ -154,7 +154,6 @@ class TurboSmsApiTest extends TestCase
     }
 }
 
-
 class TestAuthResult
 {
     public function __construct($resultMsg)
@@ -170,7 +169,6 @@ class TestSendSmsResult
         $this->SendSMSResult = $result;
     }
 }
-
 
 class TestResultArray
 {

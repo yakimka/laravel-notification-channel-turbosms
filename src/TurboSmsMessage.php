@@ -4,7 +4,6 @@ namespace NotificationChannels\TurboSms;
 
 class TurboSmsMessage
 {
-
     /**
      * The phone number the message should be sent from.
      *
@@ -22,7 +21,7 @@ class TurboSmsMessage
     /**
      * Create a new message instance.
      *
-     * @param  string $content
+     * @param string $content
      *
      * @return static
      */
@@ -32,7 +31,7 @@ class TurboSmsMessage
     }
 
     /**
-     * @param  string $content
+     * @param string $content
      */
     public function __construct($content = '')
     {
@@ -42,7 +41,7 @@ class TurboSmsMessage
     /**
      * Set the message content.
      *
-     * @param  string $content
+     * @param string $content
      *
      * @return $this
      */
@@ -56,7 +55,7 @@ class TurboSmsMessage
     /**
      * Set the phone number or sender name the message should be sent from.
      *
-     * @param  string $from
+     * @param string $from
      *
      * @return $this
      */
